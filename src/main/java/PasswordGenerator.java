@@ -23,6 +23,4 @@ public class PasswordGenerator {
         }
         return builder.toString();
     }
-
-
 }

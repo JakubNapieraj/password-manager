@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.List;
 
-import static java.util.stream.Collectors.toList;
+
 
 public class PasswordManager {
 
@@ -23,11 +23,15 @@ public class PasswordManager {
         while (true) {
 
             System.out.println(
-                    "Jeżeli chcesz wyszukać hasło do witryny wciśnij 1 \n" +
-                            "Jeżeli chcesz wygenerować nowe losowe hasło to wciśnij 2 \n  " +
-                            "Jeżeli chcesz skopiować hasło do pamięci podręcznej wciśnij 3 \n " +
-                            "Jeżeli chcesz wyświetlić wszystkie serwisy wciśnij 4 \n " +
-                            "Jeżeli chcesz opuścić manager wciśnij 0");
+                            "Wciśnij [1] jeżeli chcesz wyszukać hasło do witryny\n" +
+                                    "\n"+
+                            "Wciśnij [2] jeżeli chcesz wprowadzić nową witrynę \n" +
+                                    "\n"+
+                            "Wciśnij [3] jeżeli chcesz skopiować hasło do pamięci podręcznej \n" +
+                                    "\n"+
+                            "Wciśnij [4] jeżeli chcesz wyświetlić wszystkie serwisy \n" +
+                                    "\n"+
+                            "Wciśnij [0] jeżeli chcesz opuścić manager");
             String userInput = scanner.nextLine();
 
 
@@ -41,7 +45,7 @@ public class PasswordManager {
                             .findFirst()
                             .get();
 
-                    System.out.println("Jeżeli chcesz skopiować hasło do pamięci podręcznej wciśnij 1. ");
+                    System.out.println("Wciśnij [1] jeżeli chcesz skopiować hasło do pamięci podręcznej. ");
 
                     String userInput1 = scanner.nextLine();
 
@@ -63,7 +67,7 @@ public class PasswordManager {
                 String webSiteName = scanner.nextLine();
                 System.out.println("Proszę podać Login : ");
                 String login = scanner.nextLine();
-                System.out.println("Jeżeli chcesz wygenerować losowe hasło naciśnij 1, jeżeli nie wciśnij 0");
+                System.out.println("Wciśnij [1] jeżeli chcesz wygenerować losowe hasło, jeżeli nie wciśnij [0]");
                 String checkIfWantToGeneratePassword = scanner.nextLine();
                 String password = "";
                 if (checkIfWantToGeneratePassword.equals("1")) {

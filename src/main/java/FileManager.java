@@ -2,6 +2,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.CSVWriter;
+import org.jasypt.util.text.BasicTextEncryptor;
 
 
 import java.io.FileReader;
@@ -15,18 +16,21 @@ import static java.util.stream.Collectors.toList;
 public class FileManager {
 
     public static void dumpPasswordEntriesToFile(Map<String, PasswordEntry> passwordEntries) throws IOException {
-        CSVWriter writer = new CSVWriter(
-                new FileWriter("Passwords.csv"),
-                ';',
-                '"',
-                '\\',
-                "\n");
+        FileWriter fileWriter = new FileWriter("Passwords.csv");
+        for (PasswordEntry passwordEntry : passwordEntries.values()) {
+            String row = "\"" + passwordEntry.getWebsiteName() + "\";"
+                    + "\"" + passwordEntry.getLogin() + "\";"
+                    + "\"" + passwordEntry.getPassword() + "\"";
+            BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+            String privateData = "secretKey";
+            textEncryptor.setPasswordCharArray(row.toCharArray());
+            String encryptedData = textEncryptor.encrypt(privateData);
 
-        writer.writeAll(passwordEntries.values().stream()
-                .map(FileManager::passwordEntriesToArray)
-                .collect(toList()));
-        writer.close();
+            fileWriter.write(encryptedData);
+        }
+        fileWriter.close();
     }
+
 
 
 
