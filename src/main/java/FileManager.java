@@ -8,12 +8,13 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.stream.Collectors.toList;
 
 public class FileManager {
 
-    public static void dumpPasswordEntriesToFile(List<PasswordEntry> passwordEntries) throws IOException {
+    public static void dumpPasswordEntriesToFile(Map<String, PasswordEntry> passwordEntries) throws IOException {
         CSVWriter writer = new CSVWriter(
                 new FileWriter("Passwords.csv"),
                 ';',
@@ -21,11 +22,13 @@ public class FileManager {
                 '\\',
                 "\n");
 
-        writer.writeAll(passwordEntries.stream()
-                .map(FileManager::passwordEntriesToArray) // TODO: 2019-08-22 paswordEntriesToArray
+        writer.writeAll(passwordEntries.values().stream()
+                .map(FileManager::passwordEntriesToArray)
                 .collect(toList()));
         writer.close();
     }
+
+
 
     public static String[] passwordEntriesToArray(PasswordEntry passwordEntry) {
         return new String[]{
