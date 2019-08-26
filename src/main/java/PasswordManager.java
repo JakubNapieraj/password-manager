@@ -1,10 +1,11 @@
+
+
 import java.awt.*;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.io.IOException;
 import java.util.*;
 import java.util.List;
-
 
 
 public class PasswordManager {
@@ -15,7 +16,15 @@ public class PasswordManager {
 
     public static void main(String[] args) throws IOException {
 
+
+        System.out.println("Proszę wpisać hasło : ");
+        String mainPassword = scanner.nextLine();
+
+        DescriptionFileReader descriptionFileReader = new DescriptionFileReader("Password.csv", mainPassword);
+        descriptionFileReader.read();
+
         List<PasswordEntry> passwordEntries = FileManager.readPasswordEntriesFromFile();
+
         for (PasswordEntry passwordEntry : passwordEntries) {
             passwordMap.put(passwordEntry.getWebsiteName(), passwordEntry);
         }
@@ -23,14 +32,14 @@ public class PasswordManager {
         while (true) {
 
             System.out.println(
-                            "Wciśnij [1] jeżeli chcesz wyszukać hasło do witryny\n" +
-                                    "\n"+
+                    "Wciśnij [1] jeżeli chcesz wyszukać hasło do witryny\n" +
+                            "\n" +
                             "Wciśnij [2] jeżeli chcesz wprowadzić nową witrynę \n" +
-                                    "\n"+
+                            "\n" +
                             "Wciśnij [3] jeżeli chcesz skopiować hasło do pamięci podręcznej \n" +
-                                    "\n"+
+                            "\n" +
                             "Wciśnij [4] jeżeli chcesz wyświetlić wszystkie serwisy \n" +
-                                    "\n"+
+                            "\n" +
                             "Wciśnij [0] jeżeli chcesz opuścić manager");
             String userInput = scanner.nextLine();
 

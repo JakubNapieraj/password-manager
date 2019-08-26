@@ -1,3 +1,5 @@
+import org.jasypt.util.text.BasicTextEncryptor;
+
 import java.io.*;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,9 +18,11 @@ public class DescriptionFileReader extends Reader {
 
         while ((line = bufferedReader.readLine()) != null) {
 
+            BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+            String decryptedData = textEncryptor.decrypt(line);
 
 
-            lines.add(line);
+            lines.add(decryptedData);
         }
         decrypted = String.join("\n", lines) + "\n";
     }
