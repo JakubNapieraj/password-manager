@@ -9,20 +9,24 @@ public class DescriptionFileReader extends Reader {
     private BufferedReader bufferedReader;
     private String decrypted;
     private int indexOfNextChar = 0;
+    BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
 
     public DescriptionFileReader(String fileName, String key) throws IOException {
         this.bufferedReader = new BufferedReader(new FileReader(fileName));
         List<String> lines = new LinkedList<>();
 
         String line = null;
+        BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+        textEncryptor.setPassword(key);
 
         while ((line = bufferedReader.readLine()) != null) {
 
-            BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-            String decryptedData = textEncryptor.decrypt(line);
+            try {
+                lines.add(textEncryptor.decrypt(line));
 
-
-            lines.add(decryptedData);
+            } catch (Exception e) {
+                System.out.println("Wprowadziłeś błędne hasło.");
+            }
         }
         decrypted = String.join("\n", lines) + "\n";
     }
@@ -37,7 +41,7 @@ public class DescriptionFileReader extends Reader {
         for (int i = 0; i < len; i++) {
             if (decrypted.length() > indexOfNextChar) {
                 char readCharacter = decrypted.charAt(indexOfNextChar++);
-                cbuf[off + 1] = readCharacter;
+                cbuf[off + i] = readCharacter;
             } else {
                 return i;
             }

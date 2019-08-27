@@ -20,10 +20,9 @@ public class PasswordManager {
         System.out.println("Proszę wpisać hasło : ");
         String mainPassword = scanner.nextLine();
 
-        DescriptionFileReader descriptionFileReader = new DescriptionFileReader("Password.csv", mainPassword);
-        descriptionFileReader.read();
+        DescriptionFileReader descriptionFileReader = new DescriptionFileReader("Passwords.csv", mainPassword);
 
-        List<PasswordEntry> passwordEntries = FileManager.readPasswordEntriesFromFile();
+        List<PasswordEntry> passwordEntries = FileManager.readPasswordEntriesFromFile(descriptionFileReader);
 
         for (PasswordEntry passwordEntry : passwordEntries) {
             passwordMap.put(passwordEntry.getWebsiteName(), passwordEntry);
@@ -104,9 +103,5 @@ public class PasswordManager {
             }
         }
         FileManager.dumpPasswordEntriesToFile(passwordMap);
-
-
     }
-
-
 }

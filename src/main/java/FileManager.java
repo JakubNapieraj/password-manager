@@ -9,10 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 import static java.util.stream.Collectors.toList;
 
 public class FileManager {
+
 
     public static void dumpPasswordEntriesToFile(Map<String, PasswordEntry> passwordEntries) throws IOException {
         FileWriter fileWriter = new FileWriter("Passwords.csv");
@@ -20,17 +22,14 @@ public class FileManager {
             String row = "\"" + passwordEntry.getWebsiteName() + "\";"
                     + "\"" + passwordEntry.getLogin() + "\";"
                     + "\"" + passwordEntry.getPassword() + "\"";
-            BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
-            String privateData = "secretKey";
-            textEncryptor.setPasswordCharArray(row.toCharArray());
-            String encryptedData = textEncryptor.encrypt(privateData);
 
-            fileWriter.write(encryptedData);
+            BasicTextEncryptor textEncryptor = new BasicTextEncryptor();
+            textEncryptor.setPassword("password");
+            String encryptedData = textEncryptor.encrypt(row);
+            fileWriter.write(encryptedData + "\n");
         }
         fileWriter.close();
     }
-
-
 
 
     public static String[] passwordEntriesToArray(PasswordEntry passwordEntry) {
@@ -41,7 +40,8 @@ public class FileManager {
     }
 
 
-    public static List<PasswordEntry> readPasswordEntriesFromFile() throws IOException {
+    public static List<PasswordEntry> readPasswordEntriesFromFile(DescriptionFileReader myreader) throws IOException {
+
 
         CSVParserBuilder parserBuilder = new CSVParserBuilder() // parser builder do parametrów
                 .withEscapeChar('\\')
@@ -49,14 +49,20 @@ public class FileManager {
                 .withQuoteChar('"')
                 .withSeparator(';');
 
-        CSVReaderBuilder readerBuilder = new CSVReaderBuilder(new FileReader("Passwords.csv")).withCSVParser(parserBuilder.build());
+        CSVReaderBuilder readerBuilder = new CSVReaderBuilder(myreader).withCSVParser(parserBuilder.build());
         CSVReader reader = readerBuilder.build();
         return reader.readAll().stream()
                 .map(FileManager::arrayToPasswordEntry)
+                .filter(Objects::nonNull)
                 .collect(toList());
     }
 
-    private static PasswordEntry arrayToPasswordEntry(String[] row){
+
+    private static PasswordEntry arrayToPasswordEntry(String[] row) {
+
+        if (row.length != 3) {
+            return null;
+        }
 
         String websiteName = row[0];
         String login = row[1];
